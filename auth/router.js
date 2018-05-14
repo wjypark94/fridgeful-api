@@ -1,13 +1,11 @@
 "use strict";
 
 const express = require("express");
+const bodyParser = require("body-parser");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const bodyParser = require("body-parser");
-
-const config = require("../config");
 const router = express.Router();
-
+const config = require("../config");
 
 const createAuthToken = function(user) {
     return jwt.sign({user}, config.JWT_SECRET, {
@@ -20,15 +18,13 @@ const createAuthToken = function(user) {
   const localAuth = passport.authenticate('local', {session: false});
   router.use(bodyParser.json());
   
-  // The user provides a username and password to login
-  router.post('/', localAuth, (req, res) => {
+  router.post('/login', localAuth, (req, res) => {
     const authToken = createAuthToken(req.user.serialize());
     res.json({authToken, userId: req.user._id});
   });
   
   const jwtAuth = passport.authenticate('jwt', {session: false});
   
-  // The user exchanges a valid JWT for a new one with a later expiration
   router.post('/refresh', jwtAuth, (req, res) => {
     const authToken = createAuthToken(req.user);
     res.json({authToken});
