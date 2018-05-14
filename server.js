@@ -1,5 +1,13 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const passport = require('passport');
+
+mongoose.Promise = global.Promise;
+
  const app = express();
+ const jsonParser = bodyParser.json();
 
  const PORT = process.env.PORT || 3000;
 
