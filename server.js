@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -6,25 +8,100 @@ const passport = require('passport');
 
 mongoose.Promise = global.Promise;
 
- const app = express();
- const jsonParser = bodyParser.json();
+const { router: usersRouter } = require('./users');
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const {DATABASE_URL, PORT} = require('./config');
 
- const PORT = process.env.PORT || 3000;
+
+const app = express();
+const jsonParser = bodyParser.json();
 
 const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config');
 
- app.get('/api/*', (req, res) => {
-   res.json({ok: true});
- });
-
- app.use(
-     cors({
-         origin: CLIENT_ORIGIN
-     })
- )
+app.use(
+    cors({
+        origin: CLIENT_ORIGIN
+    })
+);
 
 
- app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.use(bodyParser.json());
+app.use(morgan('common'));
 
- module.exports = {app};
+
+// CORS
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+    
+    app.use('*', function (req, res) {
+      return res.status(404).json({ message: 'Not Found' });
+    });
+
+
+let server;
+
+//runServer is responsible for coordinating the connection
+//to the database and the running of the HTTP server
+//use Mongoose to connect to the database using the URL from config.js
+function runServer(databaseUrl=DATABASE_URL, port=PORT){
+  return new Promise(function(resolve, reject){
+      mongoose.connect(databaseUrl, function(err){
+              if(err){
+                  return reject(err);
+              }
+              console.log(`mongoose connected to ${databaseUrl}`);
+              server = app.listen(port, function(){
+                  console.log(`Your app is listening on port ${port}!!!!`);
+                  resolve();
+              })
+              .on('error', function(err){
+                  mongoose.disconnect();
+                  reject(err);
+              });
+      });
+  });
+}
+
+//closeServer needs access to a server object but that only 
+//gets created wen runServer runs so we declare server here 
+//and then assign a value to it in run
+
+//responsible for disconnecting from the database and
+//closing down the app
+
+function closeServer() {
+    return mongoose.disconnect().then(() => {
+      return new Promise((resolve, reject) => {
+        console.log('Closing server');
+        server.close(err => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+    });
+  }
+
+//useful trick for making this file both an executabel script 
+//and a module
+if (require.main === module) {
+  runServer(DATABASE_URL).catch(err=> console.log(err));
+}
+
+module.exports = {app, runServer, closeServer};
