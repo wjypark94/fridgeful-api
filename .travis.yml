@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: D+c05CkKx2KTWjRltLE/bjSRjWWeS0U4DsA96RR2N+JqDBeRgDZtCBXrAYBX+TPeDkzMRrsaGT0Bc0hBn3pFV2x/tUaVZMZVTQxwKlrVZK0BWib260kiBECSd+vxoKnYvqCz8BXz0UqPuGERzPspA6RMZsAL6BiIj1gpzz81Ekzn02WYU2VNpqAnRSW4zGE90j0q6GV7OCVBalzuu02ByxlkHQ33+u72NhuWpVQH57SF3UQpR9SELXT2qDW+2vXCAL2KTbt8fVTfOODPNakAi+Yj9DIIlytcxK7gpjeeSoMBoYPeLImyfDRv2fy4z1O3aod+EXW/IrVzbfCos3L5EgJNwJVdYMUHxdTQdTEjcHg9sPWFNAJaJFsrHs8u45UosR/Kr1W3iKRbSxgMvuL+G4PvQGP8QskBEfKV+CPJi0CA8F9wQGHC0YxjERJl+mS350RIFDLBM8vXotNlppBVKl6GGu48HgbqC5Uqgw7MDuEw7KGVlMhVRMkPiTuJEFN52q0sJsh4ykjpeVwKapZPPQGC16xD5gVi+fdMDsNbOmP8sUD3veOsR2bpHjROYB5T+KrPcI2YGUu5uS2zkJSRq4sQxo9XgON1B1cDiP/GuuFc9qFT1fwlShsepl6whKhhfe0VtOTw8kW1ENV0iv0RjVhgjcNVXSjSI9QhaE5TS5A=
+  app: sheltered-headland-53456
+  on:
+    repo: wjypark94/fridgeful-api
