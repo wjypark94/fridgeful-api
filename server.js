@@ -12,12 +12,24 @@ const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const {DATABASE_URL, PORT} = require('./config');
 
+const recipeRouter = require('./recipeRouter');
+const { Recipe } = require('./models');
 
 const app = express();
 const jsonParser = bodyParser.json();
 
 const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config');
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
 
 app.use(
     cors({
@@ -30,15 +42,13 @@ app.use(morgan('common'));
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
-  if (req.method === 'OPTIONS') {
-    return res.send(204);
-  }
-  next();
-});
+app.use('/api/recipelist', recipeRouter);
+
+
+app.use('/login', jsonParser, authRouter);
+app.use('/user-acc/', usersRouter);
+
+
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
