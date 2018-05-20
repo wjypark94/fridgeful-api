@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 mongoose.Promise = global.Promise;
 
+const { newRecipeSchema } = require('../models');
+
 const UserSchema = mongoose.Schema({
     username: {
       type: String,
