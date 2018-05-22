@@ -1,3 +1,4 @@
+
 "use strict";
 
 const express = require('express');
@@ -106,4 +107,4 @@ if (require.main === module) {
   runServer(DATABASE_URL).catch(err=> console.log(err));
 }
 
-module.exports = {app, runServer, closeServer};
+module.exports = {app, runServer, closeServer}
