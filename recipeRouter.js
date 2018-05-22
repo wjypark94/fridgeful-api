@@ -63,16 +63,17 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
 
-    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    /*if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message = (
         `Request path id (${req.params.id}) and request body id ` +
         `(${req.body.id}) must match`);
       console.error(message);
       return res.status(400).json({ message: message });
     }
+    */
   
     const toUpdate = {};
-    const updateableFields = ['title', 'content'];
+    const updateableFields = ['content'];
   
     updateableFields.forEach(field => {
       if (field in req.body) {
