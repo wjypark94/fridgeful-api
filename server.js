@@ -40,16 +40,10 @@ app.use(
 
 app.use(bodyParser.json());
 app.use(morgan('common'));
+
 app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter);
-
+app.use('/api/auth', jsonParser, authRouter);
 app.use('/api/recipelist', recipeRouter);
-
-
-app.use('/login', jsonParser, authRouter);
-app.use('/user-acc/', usersRouter);
-
-
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
