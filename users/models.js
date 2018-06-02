@@ -2,9 +2,8 @@
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-mongoose.Promise = global.Promise;
 
-const { newRecipeSchema } = require('../models');
+mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
     username: {
@@ -15,7 +14,7 @@ const UserSchema = mongoose.Schema({
     password: {
       type: String,
       required: true
-    },
+    }
   });
 
 UserSchema.methods.forAuthToken = function(){
