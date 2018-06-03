@@ -42,6 +42,8 @@ app.use(
   })
 );
 
+app.options('*', cors());
+
 app.use('/api/users', usersRouter);
 app.use('/api/auth', jsonParser, authRouter);
 app.use('/api/recipelist', recipeRouter);
