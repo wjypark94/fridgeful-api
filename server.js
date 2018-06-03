@@ -48,6 +48,10 @@ app.get('/api/*', (req, res) => {
   res.json({ok: true});
 });
 
+app.get('/*', (req, res) => {
+  res.json({ok: true});
+});
+
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
