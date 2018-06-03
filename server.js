@@ -18,7 +18,7 @@ const { Recipe } = require('./models');
 
 const app = express();
 const jsonParser = bodyParser.json();
-const jwtAuth = passport.authenticate('jwt', { session: false });
+
 
 app.use(bodyParser.json());
 app.use(morgan('common'));
@@ -37,14 +37,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-/*app.use(
+app.use(
   cors({
       origin: CLIENT_ORIGIN
   })
 );
-*/
 
-app.use(cors());
 app.options('*', cors());
 
 
