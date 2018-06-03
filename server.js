@@ -18,6 +18,7 @@ const { Recipe } = require('./models');
 
 const app = express();
 const jsonParser = bodyParser.json();
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 app.use(bodyParser.json());
 app.use(morgan('common'));
@@ -69,7 +70,6 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-const jwtAuth = passport.authenticate('jwt', { session: false });
 
 let server;
 
