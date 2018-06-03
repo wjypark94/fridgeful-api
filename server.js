@@ -44,6 +44,10 @@ app.use('/api/users', usersRouter);
 app.use('/api/auth', jsonParser, authRouter);
 app.use('/api/recipelist', recipeRouter);
 
+app.get('/api/*', (req, res) => {
+  res.json({ok: true});
+});
+
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
