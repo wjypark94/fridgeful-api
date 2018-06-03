@@ -31,14 +31,20 @@ app.use(function (req, res, next) {
   if (req.method === 'OPTIONS') {
     return res.send(204);
   }
+ 
+  
   next();
 });
 
-app.use(
+/*app.use(
   cors({
       origin: CLIENT_ORIGIN
   })
 );
+*/
+
+app.use(cors());
+app.options('*', cors());
 
 
 
@@ -52,6 +58,12 @@ app.get('/api/*', (req, res) => {
 
 app.get('/*', (req, res) => {
   res.json({ok: true});
+});
+
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'working'
+  });
 });
 
 passport.use(localStrategy);
