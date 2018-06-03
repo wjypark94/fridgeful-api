@@ -18,7 +18,7 @@ const { Recipe } = require('./models');
 
 const app = express();
 const jsonParser = bodyParser.json();
-
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 app.use(bodyParser.json());
 app.use(morgan('common'));
