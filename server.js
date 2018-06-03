@@ -24,11 +24,23 @@ app.use(morgan('common'));
 
 const cors = require('cors');
 
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
+
 app.use(
   cors({
       origin: CLIENT_ORIGIN
   })
 );
+
+
 
 app.use('/api/users', usersRouter);
 app.use('/api/auth', jsonParser, authRouter);
