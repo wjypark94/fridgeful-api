@@ -33,8 +33,6 @@ app.use(function (req, res, next) {
   if (req.method === 'OPTIONS') {
     return res.send(204);
   }
- 
-  
   next();
 });
 
